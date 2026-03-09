@@ -14,6 +14,7 @@ mod input;
 mod library;
 mod mcp;
 mod render;
+mod scripting;
 mod torrent;
 
 use clap::{Parser, Subcommand};
