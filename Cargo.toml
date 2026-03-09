@@ -47,12 +47,16 @@ pollster = "0.4"
 rodio = "0.20"
 symphonia = { version = "0.5", features = ["all"] }
 
+# Audio metadata
+lofty = "0.22"
+
 # BitTorrent
 librqbit = "8"
 
 # CLI and config
 clap = { version = "4", features = ["derive", "env"] }
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
@@ -61,6 +65,9 @@ tokio = { version = "1", features = ["rt-multi-thread", "fs", "sync", "macros"] 
 dirs = "6.0"
 thiserror = "2"
 anyhow = "1"
+
+# Utilities
+rand = "0.9"
 
 [dev-dependencies]
 tempfile = "3"
