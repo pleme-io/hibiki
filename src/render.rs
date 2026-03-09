@@ -16,7 +16,7 @@
 //!       v
 //! garasu Scene graph
 //!   - Album art texture (decoded via image crate)
-//!   - Track list (fude rich text)
+//!   - Track list (mojiban rich text)
 //!   - Playback controls (egaku widgets)
 //!   - Waveform visualizer (custom shader)
 //!   - Volume slider (egaku widget)
@@ -30,7 +30,7 @@
 //! - **Album art panel**: Displays cover art for the current track, decoded from
 //!   embedded metadata or companion image files (cover.jpg, folder.png).
 //!
-//! - **Track list**: Scrollable list of queued tracks rendered with fude. The
+//! - **Track list**: Scrollable list of queued tracks rendered with mojiban. The
 //!   current track is highlighted with the accent colour from configuration.
 //!
 //! - **Playback controls**: Play/pause, next, previous, shuffle, repeat buttons
@@ -44,7 +44,7 @@
 //! - **Volume control**: Vertical or horizontal slider for volume adjustment.
 //!
 //! - **Library browser**: Tab for browsing the music library by artist, album,
-//!   or search query. Uses fude for styled text and egaku for list/grid layout.
+//!   or search query. Uses mojiban for styled text and egaku for list/grid layout.
 //!
 //! - **Torrent panel**: Shows active downloads, progress bars, peer counts.
 //!   Integrates with the torrent module for real-time status updates.
@@ -53,6 +53,6 @@
 //!
 //! - `garasu`: GPU context management, texture loading, shader pipeline
 //! - `egaku`: Widget toolkit for controls, sliders, buttons, lists
-//! - `fude`: Rich text rendering for track metadata and library browser
+//! - `mojiban`: Rich text rendering for track metadata and library browser
 //! - `wgpu`: Low-level GPU API (managed by garasu)
 //! - `winit`: Window creation and event loop (managed by garasu)
