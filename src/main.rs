@@ -12,6 +12,7 @@ mod audio;
 mod config;
 mod input;
 mod library;
+mod mcp;
 mod render;
 mod torrent;
 
@@ -57,6 +58,8 @@ enum Commands {
         /// Directory to scan (default: configured music_dir)
         path: Option<std::path::PathBuf>,
     },
+    /// Start MCP server (stdio transport)
+    Mcp,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -90,6 +93,14 @@ fn main() -> anyhow::Result<()> {
             let scan_dir = path.unwrap_or_else(|| cfg.music_dir.clone());
             tracing::info!("scanning library: {}", scan_dir.display());
             run_scan(cfg, &scan_dir)?;
+        }
+        Some(Commands::Mcp) => {
+            let rt = tokio::runtime::Builder::new_multi_thread()
+                .enable_all()
+                .build()?;
+            rt.block_on(async {
+                mcp::run().await.map_err(|e| anyhow::anyhow!("MCP server error: {e}"))
+            })?;
         }
     }
 
