@@ -128,6 +128,11 @@ fn madori_key_to_awase(key: &KeyCode) -> Option<awase::Key> {
             '4' => Some(awase::Key::Num4), '5' => Some(awase::Key::Num5),
             '6' => Some(awase::Key::Num6), '7' => Some(awase::Key::Num7),
             '8' => Some(awase::Key::Num8), '9' => Some(awase::Key::Num9),
+            '/' => Some(awase::Key::Slash),
+            '+' | '=' => Some(awase::Key::Equal),
+            '-' => Some(awase::Key::Minus),
+            ',' => Some(awase::Key::Comma),
+            '.' => Some(awase::Key::Period),
             _ => None,
         },
         KeyCode::Space => Some(awase::Key::Space),
@@ -140,6 +145,10 @@ fn madori_key_to_awase(key: &KeyCode) -> Option<awase::Key> {
         KeyCode::Down => Some(awase::Key::Down),
         KeyCode::Left => Some(awase::Key::Left),
         KeyCode::Right => Some(awase::Key::Right),
+        KeyCode::Home => Some(awase::Key::Home),
+        KeyCode::End => Some(awase::Key::End),
+        KeyCode::PageUp => Some(awase::Key::PageUp),
+        KeyCode::PageDown => Some(awase::Key::PageDown),
         _ => None,
     }
 }
@@ -491,9 +500,10 @@ mod tests {
     }
 
     #[test]
-    fn to_awase_hotkey_unconvertible() {
+    fn to_awase_hotkey_converts_page_up() {
         let event = key(KeyCode::PageUp);
-        assert!(to_awase_hotkey(&event).is_none());
+        let hk = to_awase_hotkey(&event).unwrap();
+        assert_eq!(hk.key, awase::Key::PageUp);
     }
 
     #[test]
