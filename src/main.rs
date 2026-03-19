@@ -19,7 +19,6 @@ mod torrent;
 
 use clap::{Parser, Subcommand};
 use std::sync::{Arc, Mutex};
-use tracing_subscriber::EnvFilter;
 
 use crate::audio::{AudioEngine, Track};
 use crate::input::{Action, InputMode};
@@ -64,9 +63,7 @@ enum Commands {
 }
 
 fn main() -> anyhow::Result<()> {
-    tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_default_env())
-        .init();
+    shidou::init_tracing();
 
     let cli = Cli::parse();
     let cfg = config::load(&cli.config)?;
@@ -96,12 +93,9 @@ fn main() -> anyhow::Result<()> {
             run_scan(cfg, &scan_dir)?;
         }
         Some(Commands::Mcp) => {
-            let rt = tokio::runtime::Builder::new_multi_thread()
-                .enable_all()
-                .build()?;
-            rt.block_on(async {
-                mcp::run().await.map_err(|e| anyhow::anyhow!("MCP server error: {e}"))
-            })?;
+            shidou::block_on(mcp::run())
+                .expect("failed to create tokio runtime")
+                .map_err(|e| anyhow::anyhow!("MCP server error: {e}"))?;
         }
     }
 
@@ -500,10 +494,7 @@ fn handle_action(
 
 /// Run the scan command (CLI mode).
 fn run_scan(_cfg: config::HibikiConfig, scan_dir: &std::path::Path) -> anyhow::Result<()> {
-    let rt = tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()?;
-
+    let rt = shidou::runtime::create_current_thread_runtime()?;
     rt.block_on(async {
         let mut lib = Library::new();
         let count = lib.scan(scan_dir).await?;
@@ -525,10 +516,7 @@ fn run_scan(_cfg: config::HibikiConfig, scan_dir: &std::path::Path) -> anyhow::R
 
 /// Run the add torrent command (CLI mode).
 fn run_add_torrent(cfg: config::HibikiConfig, source: &str) -> anyhow::Result<()> {
-    let rt = tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()?;
-
+    let rt = shidou::runtime::create_current_thread_runtime()?;
     rt.block_on(async {
         let mut client = TorrentClient::new(&cfg.torrent);
 
@@ -570,10 +558,7 @@ fn run_list_torrents(cfg: config::HibikiConfig) -> anyhow::Result<()> {
 
 /// Run the daemon (background mode).
 fn run_daemon(cfg: config::HibikiConfig) -> anyhow::Result<()> {
-    let rt = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()?;
-
+    let rt = shidou::create_runtime()?;
     rt.block_on(async {
         let mut library = Library::new();
         let _torrent_client = TorrentClient::new(&cfg.torrent);

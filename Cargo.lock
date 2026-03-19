@@ -1657,6 +1657,7 @@ dependencies = [
  "schemars 0.8.22",
  "serde",
  "serde_json",
+ "shidou",
  "shikumi",
  "soushi",
  "symphonia",
@@ -1664,7 +1665,6 @@ dependencies = [
  "thiserror 2.0.18",
  "tokio",
  "tracing",
- "tracing-subscriber",
  "tsunagu",
  "wgpu",
  "winit",
@@ -4198,6 +4198,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6"
 dependencies = [
  "lazy_static",
+]
+
+[[package]]
+name = "shidou"
+version = "0.1.0"
+source = "git+https://github.com/pleme-io/shidou#63a37cc8b6ed9834b247ebd4f52ea535cce7c27c"
+dependencies = [
+ "anyhow",
+ "clap",
+ "serde",
+ "shikumi",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
